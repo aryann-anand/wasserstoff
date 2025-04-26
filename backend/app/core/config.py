@@ -1,4 +1,5 @@
 from pydantic_settings import BaseSettings
+from typing import ClassVar
 from dotenv import load_dotenv
 import os
 
@@ -24,8 +25,11 @@ class Settings(BaseSettings):
     # Game settings
     STARTING_WORD: str = "Rock"
     
-    # Persona settings with ClassVar annotation
-    PERSONAS: list = {
+    # Persona settings
+    class PersonasConfig:
+        arbitrary_types_allowed = True
+        
+    PERSONAS: ClassVar[dict] = {
         "serious": {
             "positive_response": "Correct. '{}' beats '{}'. This answer has been given {} times before.",
             "negative_response": "Incorrect. '{}' does not beat '{}'. Game over. Your score: {}",
