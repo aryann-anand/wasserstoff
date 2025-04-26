@@ -39,7 +39,9 @@ async def add_session_cookie(request: Request, call_next):
     return response
 
 # Include routers
-from .api.endpoints import game_router
+from app.api.endpoints import game_router
+app.include_router(game_router, prefix=f"{settings.API_V1_STR}/game", tags=["game"])
+
 
 app.include_router(
     game_router.router,
