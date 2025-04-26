@@ -18,3 +18,5 @@ class RedisClient:
     async def close_redis_connection(cls):
         if cls.redis:
             await cls.redis.close()
+
+redis_client = RedisClient()
