@@ -64,3 +64,5 @@ Answer only YES or NO."""
         except Exception as e:
             print(f"Error calling Gemini API: {e}")
             return False
+
+ai_service = AIService()
