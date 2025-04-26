@@ -122,3 +122,5 @@ class GameService:
     def get_history(self, session_id, limit=5):
         game = self.get_game(session_id)
         return game["guesses"].get_last_n(limit) if game else []
+
+game_service = GameService()
