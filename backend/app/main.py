@@ -1,8 +1,8 @@
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from ..core.config import settings
-from ..db.mongodb import mongodb
-from ..db.redis import redis_client
+from app.core.config import settings
+from app.db.mongodb import mongodb
+from app.db.redis import redis_client
 
 app = FastAPI(title=settings.PROJECT_NAME)
 
