@@ -18,3 +18,5 @@ class MongoDB:
     async def close_mongodb_connection(cls):
         if cls.client:
             cls.client.close()
+
+mongodb = MongoDB()
