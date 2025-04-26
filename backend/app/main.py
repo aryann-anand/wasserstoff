@@ -1,8 +1,13 @@
-from fastapi import FastAPI, Request
-from fastapi.middleware.cors import CORSMiddleware
-from ..core.config import settings
-from ..db.mongodb import mongodb
-from ..db.redis import redis_client
+import sys
+import os
+
+# Add the parent directory to the Python path
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from app.core.config import settings
+from app.db.mongodb import mongodb
+from app.db.redis import redis_client
+from app.api.endpoints import game
 
 app = FastAPI(title=settings.PROJECT_NAME)
 
