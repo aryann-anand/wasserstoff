@@ -41,7 +41,7 @@ class GameService:
             self.games[session_id]["guesses"].append(settings.STARTING_WORD)
         return session_id
     
-    async def process_guess(self, session_id, guess, persona="serious"):
+    async def process_guess(self, session_id, guess, persona="cheery"):
         # Get the game state
         game = self.get_game(session_id)
         if not game:
