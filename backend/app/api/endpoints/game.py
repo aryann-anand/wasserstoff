@@ -40,14 +40,12 @@ async def make_guess(
 
 @router.get("/history", response_model=HistoryResponse)
 async def get_history(request: Request, limit: int = 5):
-    # Extract session ID from cookies
     session_id = request.cookies.get("session_id")
     if not session_id:
-        raise HTTPException(status_code=400, detail="No active game found")
+        # Return empty history instead of error
+        return HistoryResponse(guesses=[])
     
-    # Get history
     history = game_service.get_history(session_id, limit)
-    
     return HistoryResponse(guesses=history)
 
 @router.post("/reset")

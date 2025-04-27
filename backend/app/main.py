@@ -12,10 +12,11 @@ app = FastAPI(title=settings.PROJECT_NAME)
 # Set up CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://wasserstoff-aryan.vercel.app"],
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+    expose_headers=["Set-Cookie"]
 )
 
 # Event handlers for database connections
