@@ -16,7 +16,7 @@ async def make_guess(
     
     # Validate persona
     if persona not in ["serious", "cheery"]:
-        persona = "serious"
+        persona = "cheery"
     
     # Process the guess
     result = await game_service.process_guess(
