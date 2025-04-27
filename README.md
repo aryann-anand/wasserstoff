@@ -111,7 +111,7 @@ uvicorn app.main:app --reload
 
 #### 1. Navigate to the frontend directory:
 ```bash
-cd wasserstoff/backend
+cd wasserstoff/frontend
 ```
 
 #### 2. Install dependencies:
