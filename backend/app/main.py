@@ -37,7 +37,13 @@ async def add_session_cookie(request: Request, call_next):
     # If no session ID is found, set a new one
     if not request.cookies.get("session_id"):
         session_id = str(uuid.uuid4())
-        response.set_cookie(key="session_id", value=session_id, httponly=True)
+        response.set_cookie(
+            key="session_id", 
+            value=session_id, 
+            httponly=True,
+            samesite="None",  # Important for cross-domain requests
+            secure=True       # Required with SameSite=None
+        )
     
     return response
 
