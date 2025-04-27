@@ -15,7 +15,7 @@ function App() {
   });
   
   const [history, setHistory] = useState([]);
-  const [persona, setPersona] = useState('serious');
+  const [persona, setPersona] = useState('cheery');
   const [showConfetti, setShowConfetti] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
