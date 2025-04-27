@@ -9,7 +9,7 @@ router = APIRouter()
 async def make_guess(
     request: Request,
     guess_input: GuessInput,
-    persona: Optional[str] = Header("serious")
+    persona: Optional[str] = Header("cheery")
 ):
     # Extract session ID from cookies or create a new one
     session_id = request.cookies.get("session_id")
