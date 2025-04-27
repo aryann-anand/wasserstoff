@@ -229,7 +229,6 @@ function App() {
       </main>
       
       <footer className="App-footer">
-        <p>My Submission for AI Intern @ Wasserstoff</p>
         <div className="social-links">
           <a href="https://hiaryan.vercel.app" target="_blank" rel="noopener noreferrer" title="Portfolio">
             <i className="fas fa-globe"></i>
@@ -241,7 +240,7 @@ function App() {
             <i className="fab fa-linkedin"></i>
           </a>
         </div>
-        <p className="copyright">© https://github.com/aryann-anand/wasserstoff</p>
+        <p className="copyright">© Aryan Anand 2025</p>
       </footer>
     </div>
   );
