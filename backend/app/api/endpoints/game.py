@@ -1,6 +1,5 @@
-from fastapi import APIRouter, HTTPException, Depends, Request, Response, Header
+from fastapi import APIRouter, HTTPException, Depends, Request, Header
 from typing import Optional
-import uuid
 from ...models.game import GuessInput, GuessResponse, HistoryResponse
 from ...services.game_service import game_service
 
@@ -14,19 +13,6 @@ async def make_guess(
 ):
     # Extract session ID from cookies or create a new one
     session_id = request.cookies.get("session_id")
-    
-    # Create new session if none exists
-    response_object = None
-    if not session_id:
-        session_id = str(uuid.uuid4())
-        response_object = Response()
-        response_object.set_cookie(
-            key="session_id", 
-            value=session_id, 
-            httponly=True,
-            samesite="None",
-            secure=True
-        )
     
     # Validate persona
     if persona not in ["serious", "cheery"]:
@@ -50,23 +36,14 @@ async def make_guess(
         game_over=result["game_over"]
     )
     
-    # If we created a new session, set the cookie
-    if response_object:
-        response_dict = response.model_dump()
-        for key, value in response_dict.items():
-            setattr(response_object, key, value)
-        return response_object
-    
     return response
 
 @router.get("/history", response_model=HistoryResponse)
 async def get_history(request: Request, limit: int = 5):
     # Extract session ID from cookies
     session_id = request.cookies.get("session_id")
-    
-    # Return empty history if no session exists instead of error
     if not session_id:
-        return HistoryResponse(guesses=[])
+        raise HTTPException(status_code=400, detail="No active game found")
     
     # Get history
     history = game_service.get_history(session_id, limit)
@@ -78,21 +55,7 @@ async def reset_game(request: Request):
     # Extract session ID from cookies or create a new one
     session_id = request.cookies.get("session_id")
     
-    # If no session exists, create one
-    response = {"message": "Game has been reset"}
-    if not session_id:
-        session_id = str(uuid.uuid4())
-        response_obj = Response(content=str(response))
-        response_obj.set_cookie(
-            key="session_id", 
-            value=session_id, 
-            httponly=True,
-            samesite="None",
-            secure=True
-        )
-        return response_obj
-    
     # Reset the game
     game_service.reset_game(session_id)
     
-    return response
+    return {"message": "Game has been reset"}
