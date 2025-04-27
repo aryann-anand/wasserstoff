@@ -54,7 +54,7 @@ docker-compose up --build
 localhost
 ```
 
-# ><><><><><><><><><><><><><><><><><><>
+# ______________________________________________________________
 ## Method 2: Local Development Setup
 
 ### Prerequisites
