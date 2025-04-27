@@ -1,7 +1,7 @@
-from pydantic_settings import BaseSettings
-from typing import ClassVar
-from dotenv import load_dotenv
 import os
+from typing import ClassVar
+from pydantic_settings import BaseSettings
+from dotenv import load_dotenv
 
 load_dotenv()
 
@@ -18,17 +18,14 @@ class Settings(BaseSettings):
     REDIS_PORT: int = int(os.getenv("REDIS_PORT", 6379))
     REDIS_PASSWORD: str = os.getenv("REDIS_PASSWORD", "")
     
-    # Gemini settings
+    # Gemini settings (replacing OpenAI)
     GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY", "")
     GEMINI_MODEL: str = os.getenv("GEMINI_MODEL", "gemini-2.0-flash")
     
     # Game settings
     STARTING_WORD: str = "Rock"
     
-    # Persona settings
-    class PersonasConfig:
-        arbitrary_types_allowed = True
-        
+    # Persona settings with ClassVar annotation
     PERSONAS: ClassVar[dict] = {
         "serious": {
             "positive_response": "Correct. '{}' beats '{}'. This answer has been given {} times before.",

@@ -11,24 +11,51 @@ async def make_guess(
     guess_input: GuessInput,
     persona: Optional[str] = Header("serious")
 ):
+    # Extract session ID from cookies or create a new one
     session_id = request.cookies.get("session_id")
     
+    # Validate persona
     if persona not in ["serious", "cheery"]:
         persona = "serious"
     
-    result = await game_service.process_guess(session_id, guess_input.guess, persona)
-    return result
+    # Process the guess
+    result = await game_service.process_guess(
+        session_id=session_id,
+        guess=guess_input.guess,
+        persona=persona
+    )
+    
+    # Create response
+    response = GuessResponse(
+        success=result["success"],
+        message=result["message"],
+        last_guess=result["last_guess"],
+        previous_item=result["previous_item"],
+        score=result["score"],
+        global_count=result["global_count"],
+        game_over=result["game_over"]
+    )
+    
+    return response
 
 @router.get("/history", response_model=HistoryResponse)
 async def get_history(request: Request, limit: int = 5):
+    # Extract session ID from cookies
     session_id = request.cookies.get("session_id")
     if not session_id:
         raise HTTPException(status_code=400, detail="No active game found")
+    
+    # Get history
     history = game_service.get_history(session_id, limit)
+    
     return HistoryResponse(guesses=history)
 
 @router.post("/reset")
 async def reset_game(request: Request):
+    # Extract session ID from cookies or create a new one
     session_id = request.cookies.get("session_id")
+    
+    # Reset the game
     game_service.reset_game(session_id)
+    
     return {"message": "Game has been reset"}

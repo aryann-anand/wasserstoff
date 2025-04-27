@@ -5,18 +5,17 @@ class MongoDB:
     client: AsyncIOMotorClient = None
     db = None
     
-    @classmethod
-    def get_db(cls):
-        return cls.db
+    def get_db(self):
+        return self.db
     
-    @classmethod
-    async def connect_to_mongodb(cls):
-        cls.client = AsyncIOMotorClient(settings.MONGODB_URL)
-        cls.db = cls.client[settings.MONGODB_DB_NAME]
+    async def connect_to_mongodb(self):
+        self.client = AsyncIOMotorClient(settings.MONGODB_URL)
+        self.db = self.client[settings.MONGODB_DB_NAME]
+        print("Connected to MongoDB")
     
-    @classmethod
-    async def close_mongodb_connection(cls):
-        if cls.client:
-            cls.client.close()
+    async def close_mongodb_connection(self):
+        if self.client:
+            self.client.close()
+            print("Closed MongoDB connection")
 
 mongodb = MongoDB()

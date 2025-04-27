@@ -1,8 +1,11 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
-from app.core.config import settings
-from app.db.mongodb import mongodb
-from app.db.redis import redis_client
+import uuid
+
+from .api.endpoints import game
+from .core.config import settings
+from .db.mongodb import mongodb
+from .db.redis import redis_client
 
 app = FastAPI(title=settings.PROJECT_NAME)
 
@@ -39,15 +42,7 @@ async def add_session_cookie(request: Request, call_next):
     return response
 
 # Include routers
-from app.api.endpoints import game_router
-app.include_router(game_router, prefix=f"{settings.API_V1_STR}/game", tags=["game"])
-
-
-app.include_router(
-    game_router.router,
-    prefix=f"{settings.API_V1_STR}/game",
-    tags=["game"]
-)
+app.include_router(game.router, prefix=f"{settings.API_V1_STR}/game", tags=["game"])
 
 @app.get("/")
 def root():
