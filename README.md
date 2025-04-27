@@ -54,7 +54,7 @@ docker-compose up --build
 localhost
 ```
 
-# ><><><><><><><><><><><><><><><><><><><><><><
+# ><><><><><><><><><><><><><><><><><><>
 ## Method 2: Local Development Setup
 
 ### Prerequisites
@@ -126,7 +126,7 @@ npm start
 
 ### The frontend will be available at [http://localhost:3000](http://localhost:3000) .
 
-# __________________________________________________________________________
+# ______________________________________________________________
 
 # Technical Architecture
 
@@ -155,7 +155,7 @@ npm start
 - **Moderation System**: Prevents inappropriate content with automated filtering
 - **Global Statistics**: Tracks how many times each answer has been used globally
 
-# __________________________________________________________________________
+# ______________________________________________________________
 
 # Connect with me
 
