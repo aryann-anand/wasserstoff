@@ -12,7 +12,7 @@ app = FastAPI(title=settings.PROJECT_NAME)
 # Set up CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["https://wasserstoff-aryan.vercel.app"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

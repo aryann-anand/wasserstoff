@@ -6,12 +6,14 @@ class RedisClient:
         self.redis = None
     
     async def connect_to_redis(self):
+        password = None if not settings.REDIS_PASSWORD else settings.REDIS_PASSWORD
         self.redis = await redis.from_url(
             f"redis://{settings.REDIS_HOST}:{settings.REDIS_PORT}",
-            password=settings.REDIS_PASSWORD or None,
+            password=password,
             encoding="utf-8",
             decode_responses=True
         )
+
         print("Connected to Redis")
     
     async def close_redis_connection(self):
