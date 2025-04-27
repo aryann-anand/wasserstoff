@@ -159,6 +159,4 @@ npm start
 
 # Connect with me
 
-### [Linkedin](https://www.linkedin.com/in/aryananand18)
-### [Portfolio](https://hiaryan.vercel.app/)
-### [GitHub](https://github.com/aryann-anand)
+### [Linkedin](https://www.linkedin.com/in/aryananand18)  |  [Portfolio](https://hiaryan.vercel.app/)  |  [GitHub](https://github.com/aryann-anand)
