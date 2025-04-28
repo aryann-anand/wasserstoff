@@ -12,12 +12,17 @@ app = FastAPI(title=settings.PROJECT_NAME)
 # Set up CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[
+        "https://wasserstoff-aryan.vercel.app",
+        "https://wasserstoff-aryans-projects-f221096b.vercel.app",
+        "https://wasserstoff-git-main-aryans-projects-f221096b.vercel.app",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
     expose_headers=["Set-Cookie"]
 )
+
 
 # Event handlers for database connections
 @app.on_event("startup")
@@ -53,4 +58,4 @@ app.include_router(game.router, prefix=f"{settings.API_V1_STR}/game", tags=["gam
 
 @app.get("/")
 def root():
-    return {"message": "Welcome to the What Beats Rock game API!"}
+    return {"message": "© Aryan Anand 2025 , https://github.com/aryann-anand . Welcome to the What Beats Rock API!"}
