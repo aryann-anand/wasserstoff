@@ -1,28 +1,27 @@
-import google.generativeai as genai
+import os
+from groq import Groq
 from ..core.config import settings
 from ..db.redis import redis_client
 
-# Configure the Gemini API
-genai.configure(api_key=settings.GEMINI_API_KEY)
+# Initialize Groq client
+client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
 
 class AIService:
     def __init__(self):
-        self.model = genai.GenerativeModel(settings.GEMINI_MODEL)
-    
+        self.model = settings.GROQ_MODEL  # e.g., "llama3-70b-8192"
+
     async def check_if_beats(self, guess, current_item):
-        # Create a cache key
         cache_key = f"beats:{guess.lower()}:{current_item.lower()}"
         
-        # Check if response is cached
+        # Check if cached
         cached_response = await redis_client.get_cache(cache_key)
         if cached_response:
             return cached_response == "YES"
-        
-        # Handle traditional rock-paper-scissors rules directly
+
         guess_lower = guess.lower()
         current_lower = current_item.lower()
-        
-        # Special cases for the traditional game rules
+
+        # Traditional rule short-circuit
         if guess_lower == "paper" and current_lower == "rock":
             await redis_client.set_cache(cache_key, "YES")
             return True
@@ -32,8 +31,8 @@ class AIService:
         elif guess_lower == "rock" and current_lower == "scissors":
             await redis_client.set_cache(cache_key, "YES")
             return True
-        
-        # Generate prompt for Gemini - incorporate system instructions directly in the user prompt
+
+        # Prompt for Groq/LLaMA
         prompt = f"""You are a judge for the 'What Beats Rock' game. You understand basic rock-paper-scissors rules and can evaluate creative answers logically. Answer only with YES or NO.
 
 In the game 'What Beats Rock', please determine if '{guess}' beats '{current_item}'.
@@ -48,51 +47,28 @@ Beyond these basic rules, evaluate creatively and logically:
 - Could '{guess}' destroy, alter, contain, or render '{current_item}' ineffective?
 
 Answer only YES or NO."""
-        
+
         try:
-            # Call Gemini API - without the system role
-            generation_config = {
-                "temperature": 0.2,
-                "max_output_tokens": 10,
-            }
-            
-            safety_settings = [
-                {
-                    "category": "HARM_CATEGORY_HARASSMENT",
-                    "threshold": "BLOCK_MEDIUM_AND_ABOVE"
-                },
-                {
-                    "category": "HARM_CATEGORY_HATE_SPEECH",
-                    "threshold": "BLOCK_MEDIUM_AND_ABOVE"
-                },
-                {
-                    "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
-                    "threshold": "BLOCK_MEDIUM_AND_ABOVE"
-                },
-                {
-                    "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
-                    "threshold": "BLOCK_MEDIUM_AND_ABOVE"
-                }
-            ]
-            
-            # Use a single content part with the user role
-            response = await self.model.generate_content_async(
-                prompt,
-                generation_config=generation_config,
-                safety_settings=safety_settings
+            response = client.chat.completions.create(
+                model=self.model,
+                messages=[
+                    {"role": "system", "content": "You are a helpful assistant."},
+                    {"role": "user", "content": prompt}
+                ],
+                temperature=0.2,
+                max_tokens=10,
             )
             
-            # Extract answer - get the response text
-            answer = response.text.strip().upper()
+            answer = response.choices[0].message.content.strip().upper()
             if answer not in ["YES", "NO"]:
+                print(f"Unexpected response: {response.choices[0].message.content}")
                 answer = "NO"
-            
-            # Cache the response
+
             await redis_client.set_cache(cache_key, answer)
-            
             return answer == "YES"
+        
         except Exception as e:
-            print(f"Error calling Gemini API: {e}")
+            print(f"Error calling Groq API: {e}")
             return False
 
 ai_service = AIService()
