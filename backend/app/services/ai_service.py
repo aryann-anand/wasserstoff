@@ -4,11 +4,11 @@ from ..core.config import settings
 from ..db.redis import redis_client
 
 # Initialize Groq client
-client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
+client = Groq(api_key="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")
 
 class AIService:
     def __init__(self):
-        self.model = settings.GROQ_MODEL  # e.g., "llama3-70b-8192"
+        self.model = "llama-3.1-8b-instant"  # e.g., "llama3-70b-8192"
 
     async def check_if_beats(self, guess, current_item):
         cache_key = f"beats:{guess.lower()}:{current_item.lower()}"
