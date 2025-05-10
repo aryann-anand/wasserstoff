@@ -8,3 +8,4 @@ pydantic
 pydantic-settings
 better-profanity
 pymongo
+groq
